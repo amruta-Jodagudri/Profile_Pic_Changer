@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile Pic Cleaner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #removeButton {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #removeButton:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Profile Pic Cleaner</h1>
+  <button id="removeButton">Remove Profile Picture</button>
+
+  <script>
+    document.getElementById('removeButton').addEventListener('click', () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          function: () => {
+            let profilePic = document.querySelector('.profile-pic-selector'); // Adjust this selector to match the profile image element on the target website
+            if (profilePic) {
+              profilePic.remove();
+              alert('Profile picture removed!');
+            } else {
+              alert('No profile picture found.');
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
